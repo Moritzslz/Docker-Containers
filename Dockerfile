@@ -6,7 +6,7 @@
 # TODO: Set the start command
 FROM openjdk:17-bullseye
 WORKDIR /app
-COPY build/libs/H10E01-Containers-1.0.0.jar .
-COPY start.sh .
+COPY ./build/libs/H10E01-Containers-1.0.0.jar .
+COPY ./start.sh .
 CMD chmod 770 start.sh
 CMD start.sh
