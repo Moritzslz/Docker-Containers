@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PersonService {
@@ -38,22 +39,44 @@ public class PersonService {
     }
 
     public Person addParent(Person person, Person parent) {
-        // TODO: Implement
-        return null;
+        Set parents = person.getParents();
+        if (parents.size() < 2) {
+            parents.add(parent);
+            person.setParents(parents);
+            return save(person);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     public Person addChild(Person person, Person child) {
-        // TODO: Implement
-        return null;
+        Set childParents  = child.getParents();
+        if (childParents.size() < 2 || childParents.contains(person)) {
+            Set children = person.getChildren();
+            children.add(child);
+            person.setChildren(children);
+            return save(person);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     public Person removeParent(Person person, Person parent) {
-        // TODO: Implement
-        return null;
+        Set personParents = person.getParents();
+        if (personParents.size() > 1) {
+            personParents.remove(parent);
+            person.setParents(personParents);
+            return save(person);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     public Person removeChild(Person person, Person child) {
-        // TODO: Implement
-        return null;
+        Set childParents = child.getParents();
+        if (childParents.size() > 1) {
+            Set children = person.getChildren();
+            children.remove(child);
+            person.setChildren(children);
+            return save(person);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 }
