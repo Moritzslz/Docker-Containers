@@ -50,7 +50,7 @@ public class PersonService {
 
     public Person addChild(Person person, Person child) {
         Set childParents  = child.getParents();
-        if (childParents.size() < 2 || childParents.contains(person)) {
+        if (childParents.size() < 2) {
             Set children = person.getChildren();
             children.add(child);
             person.setChildren(children);
