@@ -1,5 +1,3 @@
-@REM # Compile the project
-
-@REM # Build the image
-
-@REM # Fire up the containers
+call ./gradlew clean build
+call docker build -t eist-ngrok ./
+call docker compose up -d
