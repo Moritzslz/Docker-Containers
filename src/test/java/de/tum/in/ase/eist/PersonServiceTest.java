@@ -63,12 +63,16 @@ class PersonServiceTest {
         parent.setFirstName("Max");
         parent.setLastName("Mustermann");
         parent.setBirthday(LocalDate.now());
-        personRepository.save(parent);
+        parent = personRepository.save(parent);
 
         child.setFirstName("Thomas");
         child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
-        personRepository.save(child);
+        child = personRepository.save(child);
+
+        if(child == null || parent == null) {
+            assert false;
+        }
 
         personService.addParent(child, parent);
 
@@ -81,6 +85,31 @@ class PersonServiceTest {
         Person parent2 = new Person();
         Person parent3 = new Person();
         Person child = new Person();
+
+        parent1.setFirstName("Max");
+        parent1.setLastName("Mustermann");
+        parent1.setBirthday(LocalDate.now());
+        Person nParent1 = personRepository.save(parent1);
+
+        parent2.setFirstName("Maria");
+        parent2.setLastName("Mustermann");
+        parent2.setBirthday(LocalDate.now());
+        Person nParent2 = personRepository.save(parent2);
+
+        parent3.setFirstName("Thomas");
+        parent3.setLastName("Müller");
+        parent3.setBirthday(LocalDate.now());
+        Person nParent3 = personRepository.save(parent3);
+
+        child.setFirstName("Gustav");
+        child.setLastName("Mustermann");
+        child.setBirthday(LocalDate.now());
+        Person nChild = personRepository.save(child);
+
+        personService.addParent(nChild, nParent1);
+        personService.addParent(nChild, nParent2);
+        assertThrowsExactly(ResponseStatusException(HttpStatus.BAD_REQUEST), personService.addParent(child, parent3));
+
 
 
     }
