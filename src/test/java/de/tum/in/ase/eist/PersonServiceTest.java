@@ -56,28 +56,30 @@ class PersonServiceTest {
 
     @Test
     void testAddParent() {
-        Person person = new Person();
+        Person parent = new Person();
         Person child = new Person();
 
-        person.setFirstName("Max");
-        person.setLastName("Mustermann");
-        person.setBirthday(LocalDate.now());
-        person = personRepository.save(person);
+        parent.setFirstName("Max");
+        parent.setLastName("Mustermann");
+        parent.setBirthday(LocalDate.now());
+        parent = personRepository.save(parent);
 
         child.setFirstName("Thomas");
         child.setLastName("Müller");
         child.setBirthday(LocalDate.now());
         child = personRepository.save(child);
 
-        personService.addParent(child, person);
-
-        assertTrue(personRepository.findAll().contains(person));
-        assertTrue(personRepository.findAll().contains(child));
-        assertTrue(child.getParents().size() == 1);
+        assertEquals(child.getParents(), personService.addParent(child, parent).getParents());
+        assertTrue(parent.getChildren().contains(child));
     }
 
     @Test
     void testAddThreeParents() {
+        Person parent1 = new Person();
+        Person parent2 = new Person();
+        Person parent3 = new Person();
+        Person child = new Person();
+
 
     }
 }
