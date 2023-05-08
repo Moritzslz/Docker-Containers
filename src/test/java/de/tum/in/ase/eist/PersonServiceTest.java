@@ -3,17 +3,20 @@ package de.tum.in.ase.eist;
 import de.tum.in.ase.eist.model.Person;
 import de.tum.in.ase.eist.repository.PersonRepository;
 import de.tum.in.ase.eist.service.PersonService;
+import liquibase.pro.packaged.P;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -51,5 +54,30 @@ class PersonServiceTest {
         assertTrue(personRepository.findAll().isEmpty());
     }
 
-    // TODO: Add more test cases here
+    @Test
+    void testAddParent() {
+        Person person = new Person();
+        Person child = new Person();
+
+        person.setFirstName("Max");
+        person.setLastName("Mustermann");
+        person.setBirthday(LocalDate.now());
+        person = personRepository.save(person);
+
+        child.setFirstName("Thomas");
+        child.setLastName("Müller");
+        child.setBirthday(LocalDate.now());
+        child = personRepository.save(child);
+
+        personService.addParent(child, person);
+
+        assertTrue(personRepository.findAll().contains(person));
+        assertTrue(personRepository.findAll().contains(child));
+        assertTrue(child.getParents().size() == 1);
+    }
+
+    @Test
+    void testAddThreeParents() {
+
+    }
 }
