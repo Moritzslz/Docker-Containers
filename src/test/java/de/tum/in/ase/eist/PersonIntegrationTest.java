@@ -1,5 +1,6 @@
 package de.tum.in.ase.eist;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tum.in.ase.eist.model.Person;
 import de.tum.in.ase.eist.repository.PersonRepository;
@@ -12,11 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -73,5 +75,11 @@ class PersonIntegrationTest {
         assertTrue(personRepository.findAll().isEmpty());
     }
 
-    // TODO: Add more test cases here
+    @Test
+    void testAddParent() throws Exception {
+    }
+
+    @Test
+    void testAddThreeParents() {
+    }
 }
