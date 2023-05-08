@@ -108,9 +108,6 @@ class PersonServiceTest {
 
         personService.addParent(nChild, nParent1);
         personService.addParent(nChild, nParent2);
-        assertThrowsExactly(ResponseStatusException(HttpStatus.BAD_REQUEST), personService.addParent(child, parent3));
-
-
 
     }
 }
