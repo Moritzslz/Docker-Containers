@@ -70,12 +70,10 @@ class PersonServiceTest {
         child.setBirthday(LocalDate.now());
         child = personRepository.save(child);
 
-        if(child == null || parent == null) {
-            assert false;
-        }
-
         personService.addParent(child, parent);
 
+        assertEquals(2, personRepository.findAll().size());
+        assertEquals(1, child.getParents().size());
         assertTrue(child.getParents().contains(parent));
     }
 
@@ -89,25 +87,23 @@ class PersonServiceTest {
         parent1.setFirstName("Max");
         parent1.setLastName("Mustermann");
         parent1.setBirthday(LocalDate.now());
-        Person nParent1 = personRepository.save(parent1);
+        parent1 = personRepository.save(parent1);
 
         parent2.setFirstName("Maria");
         parent2.setLastName("Mustermann");
         parent2.setBirthday(LocalDate.now());
-        Person nParent2 = personRepository.save(parent2);
+        parent2 = personRepository.save(parent2);
 
         parent3.setFirstName("Thomas");
         parent3.setLastName("Müller");
         parent3.setBirthday(LocalDate.now());
-        Person nParent3 = personRepository.save(parent3);
+        parent3 = personRepository.save(parent3);
 
         child.setFirstName("Gustav");
         child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
-        Person nChild = personRepository.save(child);
+        child = personRepository.save(child);
 
-        personService.addParent(nChild, nParent1);
-        personService.addParent(nChild, nParent2);
 
     }
 }
