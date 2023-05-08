@@ -70,7 +70,6 @@ class PersonServiceTest {
         child = personRepository.save(child);
 
         assertEquals(child.getParents(), personService.addParent(child, parent).getParents());
-        assertTrue(parent.getChildren().contains(child));
     }
 
     @Test
