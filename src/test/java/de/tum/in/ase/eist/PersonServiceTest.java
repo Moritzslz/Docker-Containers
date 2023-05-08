@@ -59,17 +59,19 @@ class PersonServiceTest {
         Person parent = new Person();
         Person child = new Person();
 
+
         parent.setFirstName("Max");
         parent.setLastName("Mustermann");
         parent.setBirthday(LocalDate.now());
-        parent = personRepository.save(parent);
+        personRepository.save(parent);
 
         child.setFirstName("Thomas");
         child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
-        child = personRepository.save(child);
+        personRepository.save(child);
 
-        child = personService.addParent(child, parent);
+        personService.addParent(child, parent);
+
         assertTrue(child.getParents().contains(parent));
     }
 
