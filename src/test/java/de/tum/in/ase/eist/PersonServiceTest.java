@@ -64,15 +64,16 @@ class PersonServiceTest {
         parent.setLastName("Mustermann");
         parent.setBirthday(LocalDate.now());
         parent = personRepository.save(parent);
+        assertEquals(1, personRepository.findAll().size());
 
         child.setFirstName("Thomas");
         child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
         child = personRepository.save(child);
+        assertEquals(2, personRepository.findAll().size());
 
         personService.addParent(child, parent);
 
-        assertEquals(2, personRepository.findAll().size());
         assertEquals(1, child.getParents().size());
         assertTrue(child.getParents().contains(parent));
     }
@@ -88,22 +89,39 @@ class PersonServiceTest {
         parent1.setLastName("Mustermann");
         parent1.setBirthday(LocalDate.now());
         parent1 = personRepository.save(parent1);
+        assertEquals(1, personRepository.findAll().size());
 
         parent2.setFirstName("Maria");
         parent2.setLastName("Mustermann");
         parent2.setBirthday(LocalDate.now());
         parent2 = personRepository.save(parent2);
+        assertEquals(2, personRepository.findAll().size());
 
         parent3.setFirstName("Thomas");
         parent3.setLastName("Müller");
         parent3.setBirthday(LocalDate.now());
         parent3 = personRepository.save(parent3);
+        assertEquals(3, personRepository.findAll().size());
 
         child.setFirstName("Gustav");
         child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
         child = personRepository.save(child);
+        assertEquals(4, personRepository.findAll().size());
 
+        Person child2 = personService.addParent(child, parent1);
+        assertEquals(1, child.getParents().size());
+        assertTrue(child.getParents().contains(parent1));
 
+        Person child3 = personService.addParent(child2, parent2);
+        assertEquals(2, child2.getParents().size());
+        assertTrue(child2.getParents().contains(parent2));
+
+        Person finalParent3 = parent3;
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            personService.addParent(child3, finalParent3);
+        });
+
+        assertEquals(exception.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 }
