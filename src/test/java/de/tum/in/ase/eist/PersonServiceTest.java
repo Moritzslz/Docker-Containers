@@ -65,11 +65,12 @@ class PersonServiceTest {
         parent = personRepository.save(parent);
 
         child.setFirstName("Thomas");
-        child.setLastName("Müller");
+        child.setLastName("Mustermann");
         child.setBirthday(LocalDate.now());
         child = personRepository.save(child);
 
-        assertEquals(child.getParents(), personService.addParent(child, parent).getParents());
+        child = personService.addParent(child, parent);
+        assertTrue(child.getParents().contains(parent));
     }
 
     @Test
